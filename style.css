@@ -1,0 +1,30 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+*:focus {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+    overflow: hidden;
+}
+
+#msglog {
+    right: 0;
+    top: 0;
+    position: fixed;
+    height: 100vh;
+    width: 156px;
+}
+
+#deets {
+    float: left;
+}
+
+#nr {
+    position: absolute;
+    width: calc(100vw - 156px);
+}
