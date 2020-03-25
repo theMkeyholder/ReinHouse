@@ -10,20 +10,27 @@
     <script src='notation.js'></script>
 
     <script src='data.js'></script>
+
     <script src='game.js'></script>
+    <script src='upgrade.js'></script>
 
     <script src='main.js'></script>
 
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id='deets'></div>
-    <br><br><br>
-    <div id='fight'></div>
-    <button id='attack' onclick='game.attack()'>Attack!!</button>
-    <br><br><br>
-    <button id='nr' onclick="game.nextRoom()">Next Room</button>
-    <textarea id='msglog' readonly></textarea>
+    <div id='main'>
+        <div id='deets'></div>
+        <br><br><br><br>
+        <div id='fight'></div>
+        <button id='attack' onclick='game.attack()'>Attack!!</button>
+        <br><br><br>
+        <button id='nr' onclick="game.nextRoom()">Next Room</button>
+    </div>
+    <div id='shop'>
+        <button id='autoprogress' onclick='UPGRADES.autoProgress.buy()'>Automatically progress through rooms - 240 gold</button>
+    </div>
+    <div id='msglog'></div>
     <script>init();</script>
 </body>
 </html>

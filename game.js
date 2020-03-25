@@ -1,22 +1,30 @@
 class Game {
-    constructor(saveData) {
-        this.room = D(0);
-        this.floor = D(0);
-        this.dreamLayer = D(0);
+    constructor(d = {}) {
+        this.room = D(d.room || 0);
+        this.floor = D(d.floor || 0);
+        this.dreamLayer = O(d.dreamLayer || 0);
 
-        this.gold = D(0);
+        this.gold = D(d.gold || 0);
 
-        this.currentRoomType = "empty room";
-        this.currentEnemy = null;
+        this.currentRoomType = d.currentRoomType || "empty room";
+        this.currentEnemy = !d.currentEnemy ? null : new Enemy(d.currentEnemy);
 
-        this.hp = D(100);
-        this.dmg = D(5);
+        this.mhp = D(d.mhp || 100);
+        this.hp = D(d.hp || 100);
+        this.dmg = D(d.dmg || 5);
+
+        this.justDied = false;
+
+        this.upgradesBought = d.upgradesBought || {
+            'autoProgress': false
+        }
     }
 
     update() {
         $('deets').innerText = `
         You are currently in room ${f(game.room)} of floor ${f(game.floor)}
         You have ${f(game.gold)} gold
+        You have ${f(game.hp)} hp
         `
         if (game.currentEnemy != null) {
             $('nr').disabled = 'disabled';
@@ -28,11 +36,30 @@ class Game {
             $('fight').innerText = '';
             $('attack').style.display = 'none';
             $('nr').disabled = '';
+            if (game.upgradesBought.autoProgress) game.nextRoom();
         }
+        save();
     }
 
     attack() {
-        this.currentEnemy.hurt(this.dmg);
+        this.hurt(this.currentEnemy.dmg);
+        if (!this.justDied) this.currentEnemy.hurt(this.dmg);
+        this.justDied = false;
+    }
+
+    hurt(dmg) {
+        this.hp = this.hp.sub(dmg);
+        if (this.hp.lte(0)) this.die();
+    }
+
+    die() {
+        this.hp = D(this.mhp);
+        this.room = D(0);
+        this.gold = D(0);
+        this.justDied = true;
+        this.currentEnemy = null;
+        this.currentRoomType = 'empty room';
+        this.logmsg(`You died and lost your gold! You are going back to the entrance but you'll keep your upgrades!!`);
     }
 
     nextRoom() {
@@ -45,6 +72,12 @@ class Game {
             case "monster room":
                 this.currentEnemy = new Enemy(this.chooseMonster());
                 this.logmsg(`A wild ${this.currentEnemy.name} appears!!!`);
+                break;
+            case "money room":
+                let reward = chooseWeighted(data.moneyTreasures);
+                let gain = randBetween(reward.gold[0], reward.gold[1]);
+                game.gold = game.gold.add(gain);
+                this.logmsg(`You found a${beginsVowel(reward.name) ? 'n' : ''} ${reward.name} worth ${f(gain)} gold!`, 'gold');
         }
     }
 
@@ -52,19 +85,24 @@ class Game {
         return chooseWeighted(data.monsters).name;
     }
 
-    logmsg(msg) {
-        $('msglog').value = msg + '\r\r' + $('msglog').value;
+    logmsg(msg, color = 'black') {
+        $('msglog').innerHTML = `<span style="color:${color}">${msg}</span><br><br>${$('msglog').innerHTML}`;
     }
 }
 
 class Enemy {
     constructor(name) {
-        this.name = name;
-        this.mhp = D(data.monsterStats[this.name].hp);
-        this.hp = D(data.monsterStats[this.name].hp);
-        this.dmg = D(data.monsterStats[this.name].dmg);
-
-        game.currentEnemy = this.name;
+        if (typeof name == 'string') {
+            this.name = name;
+            this.mhp = D(data.monsterStats[this.name].hp);
+            this.hp = D(data.monsterStats[this.name].hp);
+            this.dmg = D(data.monsterStats[this.name].dmg);
+        } else {
+            this.name = name.name;
+            this.mhp = D(name.mhp);
+            this.hp = D(name.hp);
+            this.dmg = D(name.dmg);
+        }
     }
 
     hurt(dmg) {
@@ -76,7 +114,7 @@ class Enemy {
         let g = data.monsterStats[this.name].gold;
         let gain = randBetween(g[0], g[1]);
         game.gold = game.gold.add(gain);
-        game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`);
+        game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`, 'red');
         game.currentEnemy = null;
     }
 }
