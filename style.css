@@ -29,7 +29,12 @@
 }
 
 ::-webkit-scrollbar {
-    width: 0px;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 8px;
+    background-color: #A0A0A0;
 }
 
 #msglog {
@@ -61,4 +66,15 @@
     background-color: silver;
     border: outset lightgrey 5px;
     width: calc(100vw - 166px);
+}
+
+#shop {
+    overflow-y: scroll;
+    max-height: 273px;
+}
+
+#upgrades, #items {
+    border: 2px solid grey;
+    display: flex;
+    flex-flow: column;
 }

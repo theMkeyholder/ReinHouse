@@ -11,6 +11,7 @@ class Game {
 
         this.hp = D(d.hp || 100);
         this.dmg = D(d.dmg || 5);
+        this.lck = D(d.lck || 1);
 
         this.justDied = false;
 
@@ -78,7 +79,7 @@ class Game {
         this.justDied = true;
         this.currentEnemy = null;
         this.currentRoomType = 'empty room';
-        this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades!!`, 'darkred');
+        this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades, damage and luck!!`, 'darkred');
     }
 
     nextRoom() {
@@ -93,7 +94,7 @@ class Game {
                 break;
             case "money room":
                 let reward = chooseWeighted(data.moneyTreasures);
-                let gain = randBetween(reward.gold[0], reward.gold[1]).pow(game.floor.mul(2).add(1));
+                let gain = randBetween(reward.gold[0], reward.gold[1]).mul(game.lck);
                 game.gold = game.gold.add(gain);
                 this.logmsg(`You found a${beginsVowel(reward.name) ? 'n' : ''} ${reward.name} worth ${f(gain)} gold!`, 'gold');
                 break;
@@ -101,7 +102,7 @@ class Game {
                 let potion = chooseWeighted(data.potions);
                 switch (potion.type) {
                     case "heal":
-                        game.hp = game.hp.add(potion.potency.pow(game.floor.add(1)));
+                        game.hp = game.hp.add(D(potion.potency).pow(game.floor.add(1)));
                         this.logmsg(`You found a${beginsVowel(potion.name) ? 'n' : ''} ${potion.name} that healed you for ${potion.potency} hp!!`, 'blue');
                         break;
                 }

@@ -12,7 +12,7 @@ function init() {
         button.id = i.id;
         button.onclick = () => i.buy();
         button.innerText = `${i.name} - ${f(i.cost)} gold`;
-        document.getElementById('shop').appendChild(button);
+        document.getElementById('items').appendChild(button);
     }
 }
 
@@ -32,7 +32,11 @@ let ITEMS = [
     new Item('suhp', 'super health potion', 1800),
     new Item('ssp', 'small strength potion', 500),
     new Item('msp', 'medium strength potion', 2500),
-    new Item('lsp', 'large strength potion', 1e8)
+    new Item('lsp', 'large strength potion', 1e8),
+    new Item('slp', 'small luck potion', 1e10),
+    new Item('mlp', 'medium luck potion', 1e30),
+    new Item('llp', 'large luck potion', 1e100),
+    new Item('sulp', 'super luck potion', '1e1000')
 ]
 
 function save() {

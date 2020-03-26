@@ -31,8 +31,12 @@
         <button id='nr' onclick="game.nextRoom()">Next Room</button>
     </div>
     <div id='shop'>
-        <button id='autoprogress' onclick='UPGRADES.autoProgress.buy()'>Automatically progress through rooms - 240 gold</button>
-        <button id='autokill' onclick='UPGRADES.autoKill.buy()'>Automatically kill enemies - 1e8 gold</button>
+        <div id='upgrades'>
+            <button id='autoprogress' onclick='UPGRADES.autoProgress.buy()'>Automatically progress through rooms - 240 gold</button>
+            <button id='autokill' onclick='UPGRADES.autoKill.buy()'>Automatically kill enemies - 1e8 gold</button>
+        </div>
+        <div id='items'>
+        </div>
     </div>
     <div id='save'>
         <button onclick="wipe()">HARD RESET</button>

@@ -53,6 +53,18 @@ class Item {
             case 'super strength potion':
                 game.dmg = game.dmg.tetr(2);
                 break;
+            case 'small luck potion':
+                game.lck = game.lck.add(2);
+                break;
+            case 'medium luck potion':
+                game.lck = game.lck.mul(2);
+                break;
+            case 'large luck potion':
+                game.lck = game.lck.pow(2);
+                break;
+            case 'super luck potion':
+                game.lck = game.lck.tetr(2);
+                break;
         }
     }
 }
