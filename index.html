@@ -24,11 +24,18 @@
         <br><br><br><br>
         <div id='fight'></div>
         <button id='attack' onclick='game.attack()'>Attack!!</button>
+        <div id='stairs'></div><br><br>
+        <button id='climb' onclick='game.climb(true)'>Go up the stairs to the next floor</button>
+        <button id='noclimb' onclick='game.climb(false)'>Stay on this floor</button>
         <br><br><br>
         <button id='nr' onclick="game.nextRoom()">Next Room</button>
     </div>
     <div id='shop'>
         <button id='autoprogress' onclick='UPGRADES.autoProgress.buy()'>Automatically progress through rooms - 240 gold</button>
+        <button id='autokill' onclick='UPGRADES.autoKill.buy()'>Automatically kill enemies - 1e8 gold</button>
+    </div>
+    <div id='save'>
+        <button onclick="wipe()">HARD RESET</button>
     </div>
     <div id='msglog'></div>
     <script>init();</script>

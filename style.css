@@ -15,10 +15,21 @@
 	font-family: 'Typewriter';
     padding: 0;
     margin: 0;
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Opera and Firefox */
 }
 
 *:focus {
     outline: none;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
 }
 
 #msglog {
@@ -27,8 +38,9 @@
     position: fixed;
     height: 100vh;
     width: 156px;
-    font-size: 12.65px;
-    overflow: hidden;
+    font-size: 12.5px;
+    text-align: center;
+    overflow: scroll;
     border: 1px solid grey;
 }
 
@@ -38,15 +50,14 @@
 
 #nr {
     width: 100%;
+    bottom: 0;
 }
 
 #main {
-    background-color: silver;
-    border: outset lightgrey 5px;
-    width: calc(100vw - 166px);
+    height: 300px;
 }
 
-#shop {
+#main, #shop, #save {
     background-color: silver;
     border: outset lightgrey 5px;
     width: calc(100vw - 166px);
