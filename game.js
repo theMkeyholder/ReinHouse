@@ -2,7 +2,7 @@ class Game {
     constructor(d = {}) {
         this.room = D(d.room || 0);
         this.floor = D(d.floor || 0);
-        this.dreamLayer = O(d.dreamLayer || 0);
+        this.dreamLayer = D(d.dreamLayer || 0);
 
         this.gold = D(d.gold || 0);
 
@@ -15,7 +15,8 @@ class Game {
 
         this.justDied = false;
 
-        this.isInStairwell = false;
+        this.isInStairwell = d.isInStairwell || false;
+        this.isInBedroom = d.isInBedroom || false;
 
         this.paused = false;
 
@@ -27,13 +28,13 @@ class Game {
     update() {
         if (!game.paused) {
             $('deets').innerText = `
-        You are currently in room ${f(game.room)} of floor ${f(game.floor)} which is a${beginsVowel(game.currentRoomType) ? 'n' : ''} ${game.currentRoomType}
+        You are currently in room ${f(game.room)} of floor ${f(game.floor)} ${game.dreamLayer.gt(0) ? `of dream layer ${f(game.dreamLayer)}` : ''} which is a${beginsVowel(game.currentRoomType) ? 'n' : ''} ${game.currentRoomType}
         You have ${f(game.gold)} gold
         You have ${f(game.hp)} hp
         `
-            for (let i of ITEMS) {
-                i.update();
-            }
+            for (let i of ITEMS) i.update();
+            for (let i in UPGRADES) UPGRADES[i].update();
+            if (game.upgradesBought.autoBuy) for (let i of ITEMS) i.buy();
             if (game.currentEnemy instanceof Enemy) {
                 $('nr').disabled = 'disabled';
                 $('fight').innerHTML = `
@@ -44,7 +45,7 @@ class Game {
             } else {
                 $('fight').innerText = '';
                 $('attack').style.display = 'none';
-                if (game.isInStairwell) {
+                if (game.isInStairwell || game.isInBedroom) {
                     $('nr').disabled = 'disabled';
                 } else {
                     $('nr').disabled = '';
@@ -60,6 +61,15 @@ class Game {
                 $('stairs').innerText = '';
                 $('climb').style.display = 'none';
                 $('noclimb').style.display = 'none';
+            }
+            if (game.isInBedroom) {
+                $('bed').innerText = 'Do you want to take a nap? You shouldn\'t be out for long...';
+                $('sleep').style.display = 'inline-block';
+                $('nosleep').style.display = 'inline-block';
+            } else {
+                $('bed').innerText = '';
+                $('sleep').style.display = 'none';
+                $('nosleep').style.display = 'none';
             }
             if ($('msglog').innerHTML.length > 1500) $('msglog').innerHTML = $('msglog').innerHTML.substring(0, 1500);
             save();
@@ -100,7 +110,7 @@ class Game {
                 break;
             case "monster room":
                 this.currentEnemy = new Enemy(this.chooseMonster());
-                this.logmsg(`A wild ${this.currentEnemy.name} appears!!!`);
+                if (!game.upgradesBought.autoKill) this.logmsg(`A wild ${this.currentEnemy.name} appears!!!`);
                 break;
             case "money room":
                 let reward = chooseWeighted(data.moneyTreasures);
@@ -113,7 +123,7 @@ class Game {
                 switch (potion.type) {
                     case "heal":
                         game.hp = game.hp.add(D(potion.potency).pow(game.floor.add(1)));
-                        this.logmsg(`You found a${beginsVowel(potion.name) ? 'n' : ''} ${potion.name} that healed you for ${potion.potency} hp!!`, 'blue');
+                        this.logmsg(`You found a${beginsVowel(potion.name) ? 'n' : ''} ${potion.name} that healed you for ${f(D(potion.potency).pow(game.floor.add(1)))} hp!!`, 'blue');
                         break;
                 }
                 break;
@@ -126,6 +136,15 @@ class Game {
                     this.logmsg(`You found tall staircase! Do you want to climb up to the next floor of Reinhardt's House?`, 'lime');
                 }
                 break;
+            case "bedroom":
+                if (this.gold.lt('ee10000')) {
+                    this.room = this.room.sub(1);
+                    this.nextRoom();
+                } else {
+                    this.isInBedroom = true;
+                    this.logmsg(`You found Reinhardt's bedroom! Searching through such a big house must be tiring, perhaps you should have a sleep?`, 'aqua');
+                }
+                break;
         }
     }
 
@@ -135,6 +154,20 @@ class Game {
             game.floor = game.floor.add(1);
             game.room = D(0);
             game.logmsg(`You are now on floor ${f(game.floor)}!`, 'hotpink');
+        }
+    }
+
+    sleep(bool) {
+        game.isInBedroom = false;
+        if (bool) {
+            game.room = D(0);
+            game.floor = D(0);
+            game.gold = D(0);
+            game.hp = D(100);
+            game.dmg = D(5);
+            game.lck = D(1);
+            for (let i in game.upgradesBought) game.upgradesBought[i] = false;
+            game.dreamLayer = game.dreamLayer.add(1);
         }
     }
 
@@ -151,8 +184,8 @@ class Enemy {
     constructor(name) {
         if (typeof name == 'string') {
             this.name = name;
-            this.hp = D(data.monsterStats[this.name].hp).pow(game.floor.add(1));
-            this.dmg = D(data.monsterStats[this.name].dmg).pow(game.floor.add(1));
+            this.hp = D(data.monsterStats[this.name].hp).pow(game.floor.add(1)).pow(D(1).div(game.dreamLayer.add(1)));
+            this.dmg = D(data.monsterStats[this.name].dmg).pow(game.floor.add(1)).pow(D(1).div(game.dreamLayer.add(1)));
         } else {
             this.name = name.name;
             this.hp = D(name.hp);
@@ -169,7 +202,7 @@ class Enemy {
         let g = data.monsterStats[this.name].gold;
         let gain = randBetween(g[0], g[1]);
         game.gold = game.gold.add(gain.pow(game.floor.mul(2).add(1)));
-        game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`, 'red');
+        if (!game.upgradesBought.autoKill) game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`, 'red');
         game.currentEnemy = null;
     }
 }

@@ -110,7 +110,7 @@ class Ordinal {
     gt(other) { return this.cmp(other) > 0; }
     gte(other) { return this.cmp(other) > -1; }
     lt(other) { return this.cmp(other) < 0; }
-    gt(other) { return this.cmp(other) < 1; }
+    gt(other) { return this.cmp(other) > 0; }
 
     cmpLims(other) { // For addition
         this.normalize();

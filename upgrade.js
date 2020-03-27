@@ -11,6 +11,12 @@ class Upgrade {
             game.upgradesBought[this.id] = true;
         }
     }
+
+    update() {
+        if (game.upgradesBought[this.id]) $(this.id).style.display = 'none';
+        else $(this.id).style.borderColor = game.gold.gte(this.cost) ? 'green' : 'red';
+        $(this.id).style.backgroundColor = game.gold.gte(this.cost) ? 'lime' : 'pink';
+    }
 }
 
 class Item {
@@ -32,6 +38,7 @@ class Item {
         if (game.floor.gt(this.maxFloor)) $(this.id).style.display = 'none';
         else $(this.id).style.display = 'inline-block';
         $(this.id).style.borderColor = game.gold.gte(this.cost) ? 'green' : 'red';
+        $(this.id).style.backgroundColor = game.gold.gte(this.cost) ? 'lime' : 'pink';
     }
 
     effect() {

@@ -23,6 +23,7 @@ let $ = id => document.getElementById(id);
 let UPGRADES = {
     'autoProgress': new Upgrade('autoProgress', 'Automatically progress through rooms', 240),
     'autoKill': new Upgrade('autoKill', 'Automatically kill enemies', 1e8),
+    'autoBuy': new Upgrade('autoBuy', 'Automatically buy potions', 1e30),
     'autoClimb': new Upgrade('autoClimb', 'Automatically climb stairs', 'ee100')
 }
 
