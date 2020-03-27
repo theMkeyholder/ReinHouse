@@ -3,7 +3,7 @@ let game;
 function init() {
     if (!load()) game = new Game();
 
-    $('msglog').innerHTML = '======== Log ========<br><br>';
+    $('msglog').innerHTML = '======= Log =======';
 
     setInterval(game.update,50);
 
@@ -22,21 +22,21 @@ let $ = id => document.getElementById(id);
 
 let UPGRADES = {
     'autoProgress': new Upgrade('autoProgress', 'Automatically progress through rooms', 240),
-    'autoKill': new Upgrade('autoKill', 'Automatically kill enemies', 1e8)
+    'autoKill': new Upgrade('autoKill', 'Automatically kill enemies', 1e8),
+    'autoClimb': new Upgrade('autoClimb', 'Automatically climb stairs', 'ee100')
 }
 
 let ITEMS = [
-    new Item('shp', 'small health potion', 100),
-    new Item('mhp', 'medium health potion', 300),
-    new Item('lhp', 'large health potion', 800),
-    new Item('suhp', 'super health potion', 1800),
-    new Item('ssp', 'small strength potion', 500),
-    new Item('msp', 'medium strength potion', 2500),
-    new Item('lsp', 'large strength potion', 1e8),
-    new Item('slp', 'small luck potion', 1e10),
-    new Item('mlp', 'medium luck potion', 1e30),
-    new Item('llp', 'large luck potion', 1e100),
-    new Item('sulp', 'super luck potion', '1e1000')
+    new Item('shp', 'small health potion', 100, 5),
+    new Item('mhp', 'medium health potion', 300, 8),
+    new Item('lhp', 'large health potion', 800, 12),
+    new Item('suhp', 'super health potion', 1800, Infinity),
+    new Item('ssp', 'small strength potion', 500, 9),
+    new Item('msp', 'medium strength potion', 2500, 14),
+    new Item('lsp', 'large strength potion', 1e8, Infinity),
+    new Item('slp', 'small luck potion', 1e10, 15),
+    new Item('mlp', 'medium luck potion', 1e30, 20),
+    new Item('llp', 'large luck potion', 1e300, Infinity)
 ]
 
 function save() {

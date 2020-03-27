@@ -14,10 +14,11 @@ class Upgrade {
 }
 
 class Item {
-    constructor(id, name, cost) {
+    constructor(id, name, cost, maxFloor) {
         this.id = id;
         this.name = name;
         this.cost = D(cost);
+        this.maxFloor = maxFloor;
     }
 
     buy() {
@@ -25,6 +26,12 @@ class Item {
             game.gold = game.gold.sub(this.cost);
             this.effect();
         }
+    }
+
+    update() {
+        if (game.floor.gt(this.maxFloor)) $(this.id).style.display = 'none';
+        else $(this.id).style.display = 'inline-block';
+        $(this.id).style.borderColor = game.gold.gte(this.cost) ? 'green' : 'red';
     }
 
     effect() {

@@ -17,46 +17,56 @@ class Game {
 
         this.isInStairwell = false;
 
+        this.paused = false;
+
         this.upgradesBought = d.upgradesBought || {
             'autoProgress': false
         }
     }
 
     update() {
-        $('deets').innerText = `
+        if (!game.paused) {
+            $('deets').innerText = `
         You are currently in room ${f(game.room)} of floor ${f(game.floor)} which is a${beginsVowel(game.currentRoomType) ? 'n' : ''} ${game.currentRoomType}
         You have ${f(game.gold)} gold
         You have ${f(game.hp)} hp
         `
-        if (game.currentEnemy instanceof Enemy) {
-            $('nr').disabled = 'disabled';
-            $('fight').innerHTML = `
+            for (let i of ITEMS) {
+                i.update();
+            }
+            if (game.currentEnemy instanceof Enemy) {
+                $('nr').disabled = 'disabled';
+                $('fight').innerHTML = `
             You are fighting a${beginsVowel(game.currentEnemy.name) ? 'n' : ''} ${game.currentEnemy.name} which has ${f(game.currentEnemy.hp)} health<br>
             `
-            $('attack').style.display = 'inline-block';
-            if (game.upgradesBought.autoKill) game.attack();
-        } else {
-            $('fight').innerText = '';
-            $('attack').style.display = 'none';
-            if (game.isInStairwell) {
-                $('nr').disabled = 'disabled';
+                $('attack').style.display = 'inline-block';
+                if (game.upgradesBought.autoKill) game.attack();
             } else {
-                $('nr').disabled = '';
-                if (game.upgradesBought.autoProgress) game.nextRoom();
+                $('fight').innerText = '';
+                $('attack').style.display = 'none';
+                if (game.isInStairwell) {
+                    $('nr').disabled = 'disabled';
+                } else {
+                    $('nr').disabled = '';
+                    if (game.upgradesBought.autoProgress) game.nextRoom();
+                }
             }
+            if (game.isInStairwell) {
+                $('stairs').innerText = 'Do you want to climb to the next floor of Reinhardt\'s House?? Enemies will be much stronger but killing them will be even more rewarding!';
+                $('climb').style.display = 'inline-block';
+                $('noclimb').style.display = 'inline-block';
+                if (game.upgradesBought.autoClimb) game.climb(true);
+            } else {
+                $('stairs').innerText = '';
+                $('climb').style.display = 'none';
+                $('noclimb').style.display = 'none';
+            }
+            if ($('msglog').innerHTML.length > 1500) $('msglog').innerHTML = $('msglog').innerHTML.substring(0, 1500);
+            save();
         }
-        if (game.isInStairwell) {
-            $('stairs').innerText = 'Do you want to climb to the next floor of Reinhardt\'s House?? Enemies will be much stronger but killing them will be even more rewarding!';
-            $('climb').style.display = 'inline-block';
-            $('noclimb').style.display = 'inline-block';
-        } else {
-            $('stairs').innerText = '';
-            $('climb').style.display = 'none';
-            $('noclimb').style.display = 'none';
-        }
-        if ($('msglog').innerHTML.length > 1500) $('msglog').innerHTML = $('msglog').innerHTML.substring(0, 1500);
-        save();
     }
+
+    pause() { this.paused = !this.paused }
 
     attack() {
         if (this.currentEnemy != null) {
