@@ -96,10 +96,16 @@ class Game {
         this.room = D(0);
         this.floor = D(0);
         this.gold = D(0);
+        let wake = false;
+        if (this.dreamLayer.gt(0)) {
+            this.dreamLayer = this.dreamLayer.sub(1);
+            wake = true;
+        }
         this.justDied = true;
         this.currentEnemy = null;
         this.currentRoomType = 'empty room';
-        this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades, damage and luck!!`, 'darkred');
+        if (wake) this.logmsg(`*Yawn* You wake up, though it seems you got thrown out the window and have to start again.`, 'slateblue');
+        else this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades, damage and luck!!`, 'darkred');
     }
 
     nextRoom() {
@@ -114,7 +120,7 @@ class Game {
                 break;
             case "money room":
                 let reward = chooseWeighted(data.moneyTreasures);
-                let gain = randBetween(reward.gold[0], reward.gold[1]).mul(game.lck);
+                let gain = randBetween(reward.gold[0], reward.gold[1]).pow(game.lck.pow(0.66));
                 game.gold = game.gold.add(gain);
                 this.logmsg(`You found a${beginsVowel(reward.name) ? 'n' : ''} ${reward.name} worth ${f(gain)} gold!`, 'gold');
                 break;
@@ -201,7 +207,7 @@ class Enemy {
     die() {
         let g = data.monsterStats[this.name].gold;
         let gain = randBetween(g[0], g[1]);
-        game.gold = game.gold.add(gain.pow(game.floor.mul(2).add(1)));
+        game.gold = game.gold.add(gain.mul(game.dreamLayer.add(1).mul(D(10).pow(9.2).pow(game.lck.log10()))).pow(game.floor.mul(2).mul(game.dreamLayer.add(1))));
         if (!game.upgradesBought.autoKill) game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`, 'red');
         game.currentEnemy = null;
     }

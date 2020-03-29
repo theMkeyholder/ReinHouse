@@ -3,7 +3,7 @@ let game;
 function init() {
     if (!load()) game = new Game();
 
-    $('msglog').innerHTML = '======= Log =======';
+    $('msglog').innerHTML = '====== Log ======';
 
     setInterval(game.update,50);
 
@@ -23,7 +23,7 @@ let $ = id => document.getElementById(id);
 let UPGRADES = {
     'autoProgress': new Upgrade('autoProgress', 'Automatically progress through rooms', 240),
     'autoKill': new Upgrade('autoKill', 'Automatically kill enemies', 1e8),
-    'autoBuy': new Upgrade('autoBuy', 'Automatically buy potions', 1e30),
+    'autoBuy': new Upgrade('autoBuy', 'Automatically buy potions', 1e300),
     'autoClimb': new Upgrade('autoClimb', 'Automatically climb stairs', 'ee100')
 }
 
@@ -36,8 +36,8 @@ let ITEMS = [
     new Item('msp', 'medium strength potion', 2500, 14),
     new Item('lsp', 'large strength potion', 1e8, Infinity),
     new Item('slp', 'small luck potion', 1e10, 15),
-    new Item('mlp', 'medium luck potion', 1e30, 20),
-    new Item('llp', 'large luck potion', 1e300, Infinity)
+    new Item('mlp', 'medium luck potion', '1e2000', 20),
+    new Item('llp', 'large luck potion', 'ee300', Infinity)
 ]
 
 function save() {

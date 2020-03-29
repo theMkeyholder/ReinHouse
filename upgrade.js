@@ -14,8 +14,12 @@ class Upgrade {
 
     update() {
         if (game.upgradesBought[this.id]) $(this.id).style.display = 'none';
-        else $(this.id).style.borderColor = game.gold.gte(this.cost) ? 'green' : 'red';
-        $(this.id).style.backgroundColor = game.gold.gte(this.cost) ? 'lime' : 'pink';
+        else {
+            $(this.id).style.display = 'inline-block';
+        
+            $(this.id).style.borderColor = game.gold.gte(this.cost) ? 'green' : 'red';
+            $(this.id).style.backgroundColor = game.gold.gte(this.cost) ? 'lime' : 'pink';
+        }
     }
 }
 
