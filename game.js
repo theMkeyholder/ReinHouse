@@ -33,9 +33,9 @@ class Game {
         You have ${f(game.hp)} hp
         `
             for (let i of ITEMS) i.update();
-            for (let i in UPGRADES) UPGRADES[i].update();
             if (game.dreamLayer.gt(2)) $('keepUpg').style.display = 'inline-block';
             else $('keepUpg').style.display = 'none';
+            for (let i in UPGRADES) UPGRADES[i].update();
             if (game.upgradesBought.autoBuy) for (let i of ITEMS) i.buy();
             if (game.currentEnemy instanceof Enemy) {
                 $('nr').disabled = 'disabled';

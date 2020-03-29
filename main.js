@@ -25,7 +25,7 @@ let UPGRADES = {
     'autoKill': new Upgrade('autoKill', 'Automatically kill enemies', 1e8),
     'autoBuy': new Upgrade('autoBuy', 'Automatically buy potions', 1e300),
     'autoClimb': new Upgrade('autoClimb', 'Automatically climb stairs', 'ee100'),
-    'keepUpg': new Upgrade('keepUpg', 'Keep upgrades into your dreams', 'ee500')
+    'keepUpg': new Upgrade('keepUpg', 'Keep upgrades into your dreams', 'eee5000')
 }
 
 let ITEMS = [
@@ -38,7 +38,7 @@ let ITEMS = [
     new Item('lsp', 'large strength potion', 1e8, Infinity),
     new Item('slp', 'small luck potion', 1e10, 15),
     new Item('mlp', 'medium luck potion', '1e2000', 20),
-    new Item('llp', 'large luck potion', 'ee300', Infinity)
+    new Item('llp', 'large luck potion', 'eee3', Infinity)
 ]
 
 function save() {
