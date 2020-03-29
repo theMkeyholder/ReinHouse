@@ -24,7 +24,8 @@ let UPGRADES = {
     'autoProgress': new Upgrade('autoProgress', 'Automatically progress through rooms', 240),
     'autoKill': new Upgrade('autoKill', 'Automatically kill enemies', 1e8),
     'autoBuy': new Upgrade('autoBuy', 'Automatically buy potions', 1e300),
-    'autoClimb': new Upgrade('autoClimb', 'Automatically climb stairs', 'ee100')
+    'autoClimb': new Upgrade('autoClimb', 'Automatically climb stairs', 'ee100'),
+    'keepUpg': new Upgrade('keepUpg', 'Keep upgrades into your dreams', 'ee500')
 }
 
 let ITEMS = [

@@ -208,9 +208,9 @@ class Enemy {
 
     die() {
         let g = data.monsterStats[this.name].gold;
-        let gain = randBetween(g[0], g[1]).mul(game.dreamLayer.add(1).mul(D(10).pow(9.2).pow(game.lck.log10()))).pow(game.floor.mul(2).mul(game.dreamLayer.add(1)));
-        game.gold = game.gold.add(gain);
-        if (!game.upgradesBought.autoKill) game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`, 'red');
+        let gain = randBetween(g[0], g[1]);
+        game.gold = game.gold.add(gain.max(gain.mul(game.dreamLayer.add(1).mul(D(10).pow(9.2).pow(game.lck.log10()))).pow(game.floor.mul(2).mul(game.dreamLayer.add(1)))));
+        if (!game.upgradesBought.autoKill) game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain.max(gain.mul(game.dreamLayer.add(1).mul(D(10).pow(9.2).pow(game.lck.log10()))).pow(game.floor.mul(2).mul(game.dreamLayer.add(1)))))} gold`, 'red');
         game.currentEnemy = null;
     }
 }
