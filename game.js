@@ -34,6 +34,8 @@ class Game {
         `
             for (let i of ITEMS) i.update();
             for (let i in UPGRADES) UPGRADES[i].update();
+            if (game.dreamLayer.gt(2)) $('keepUpg').style.display = 'inline-block';
+            else $('keepUpg').style.display = 'none';
             if (game.upgradesBought.autoBuy) for (let i of ITEMS) i.buy();
             if (game.currentEnemy instanceof Enemy) {
                 $('nr').disabled = 'disabled';
@@ -104,7 +106,7 @@ class Game {
         this.justDied = true;
         this.currentEnemy = null;
         this.currentRoomType = 'empty room';
-        if (wake) this.logmsg(`*Yawn* You wake up, though it seems you got thrown out the window and have to start again.`, 'slateblue');
+        if (wake) this.logmsg(`*Yawn* You wake up, though it seems you got thrown out the window and have to start again. It seems you still have the stats you gained in the dream!`, 'slateblue');
         else this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades, damage and luck!!`, 'darkred');
     }
 
@@ -172,7 +174,7 @@ class Game {
             game.hp = D(100);
             game.dmg = D(5);
             game.lck = D(1);
-            for (let i in game.upgradesBought) game.upgradesBought[i] = false;
+            if (!game.upgradesBought.keepUpg) for (let i in game.upgradesBought) game.upgradesBought[i] = false;
             game.dreamLayer = game.dreamLayer.add(1);
         }
     }
@@ -206,8 +208,8 @@ class Enemy {
 
     die() {
         let g = data.monsterStats[this.name].gold;
-        let gain = randBetween(g[0], g[1]);
-        game.gold = game.gold.add(gain.mul(game.dreamLayer.add(1).mul(D(10).pow(9.2).pow(game.lck.log10()))).pow(game.floor.mul(2).mul(game.dreamLayer.add(1))));
+        let gain = randBetween(g[0], g[1]).mul(game.dreamLayer.add(1).mul(D(10).pow(9.2).pow(game.lck.log10()))).pow(game.floor.mul(2).mul(game.dreamLayer.add(1)));
+        game.gold = game.gold.add(gain);
         if (!game.upgradesBought.autoKill) game.logmsg(`You kill the ${game.currentEnemy.name} and it drops ${f(gain)} gold`, 'red');
         game.currentEnemy = null;
     }
