@@ -17,6 +17,15 @@ class Game {
 
         this.isInStairwell = d.isInStairwell || false;
         this.isInBedroom = d.isInBedroom || false;
+        this.isInKitchen = d.isInKitchen || false;
+        this.isInCFRoom = d.isInCFRoom || false;
+        this.isInLab = d.isInLab || false;
+
+        this.has = d.has || {
+            bread: false,
+            chocolate: false,
+            fuser: false
+        }
 
         this.paused = false;
 
@@ -31,6 +40,7 @@ class Game {
         You are currently in room ${f(game.room)} of floor ${f(game.floor)} ${game.dreamLayer.gt(0) ? `of dream layer ${f(game.dreamLayer)}` : ''} which is a${beginsVowel(game.currentRoomType) ? 'n' : ''} ${game.currentRoomType}
         You have ${f(game.gold)} gold
         You have ${f(game.hp)} hp
+        ${game.has.bread ? 'You have bread' : ''}${game.has.chocolate ? ', chocolate' : ''}${game.has.fuser ? ', fuser' : ''}
         `
             for (let i of ITEMS) i.update();
             if (game.dreamLayer.gt(2)) $('keepUpg').style.display = 'inline-block';
@@ -51,7 +61,7 @@ class Game {
                     $('nr').disabled = 'disabled';
                 } else {
                     $('nr').disabled = '';
-                    if (game.upgradesBought.autoProgress) game.nextRoom();
+                    if (!(game.isInKitchen || game.isInCFRoom || game.isInLab) && game.upgradesBought.autoProgress) game.nextRoom();
                 }
             }
             if (game.isInStairwell) {
@@ -73,6 +83,15 @@ class Game {
                 $('sleep').style.display = 'none';
                 $('nosleep').style.display = 'none';
             }
+            if (game.isInKitchen) {
+                $('bread').innerText = 'You found some bread, interesting...';
+            } else  $('bread').innerText = '';
+            if (game.isInCFRoom) {
+                $('cf').innerText = 'You found some chocolate, interesting...';
+            } else  $('cf').innerText = '';
+            if (game.isInLab) {
+                $('lab').innerText = 'You found a weird device, it says fuser...';
+            } else  $('lab').innerText = '';
             if ($('msglog').innerHTML.length > 1500) $('msglog').innerHTML = $('msglog').innerHTML.substring(0, 1500);
             save();
         }
@@ -111,6 +130,9 @@ class Game {
     }
 
     nextRoom() {
+        this.isInKitchen = false;
+        this.isInCFRoom = false;
+        this.isInLab = false;
         this.room = this.room.add(1);
         this.currentRoomType = chooseWeighted(data.rooms).name;
         switch (this.currentRoomType) {
@@ -153,6 +175,36 @@ class Game {
                     this.logmsg(`You found Reinhardt's bedroom! Searching through such a big house must be tiring, perhaps you should have a sleep?`, 'aqua');
                 }
                 break;
+            case "kitchen":
+                if (this.dreamLayer.lt(5) || this.has.bread) {
+                    this.room = this.room.sub(1);
+                    this.nextRoom();
+                } else {
+                    this.isInKitchen = true;
+                    this.has.bread = true;
+                    this.logmsg(`You found some bread, interesting...`, 'brown');
+                }
+                break;
+            case "chocolate fountain room":
+                if (this.dreamLayer.lt(5) || this.has.chocolate || !this.has.bread) {
+                    this.room = this.room.sub(1);
+                    this.nextRoom();
+                } else {
+                    this.isInCFRoom = true;
+                    this.has.chocolate = true;
+                    this.logmsg(`You found some chocolate, interesting... You also complain about Reinhardt having a chocolate fountain and you don't`, 'brown');
+                }
+                break;
+            case "lab":
+                if (this.dreamLayer.lt(5) || this.has.fuser || !this.has.bread || !this.has.chocolate) {
+                    this.room = this.room.sub(1);
+                    this.nextRoom();
+                } else {
+                    this.isInLab = true;
+                    this.has.fuser = true;
+                    this.logmsg(`You found a weird device labelled "fuser", interesting...`, 'brown');
+                }
+                break;
         }
     }
 
@@ -176,6 +228,7 @@ class Game {
             game.lck = D(1);
             if (!game.upgradesBought.keepUpg) for (let i in game.upgradesBought) game.upgradesBought[i] = false;
             game.dreamLayer = game.dreamLayer.add(1);
+            game.logmsg(`You fell deeper into the dreams`, 'silver');
         }
     }
 

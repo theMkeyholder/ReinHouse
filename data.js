@@ -5,7 +5,10 @@ let data = {
         { name: "money room", weight: 10 },
         { name: "potion lab", weight: 5 },
         { name: "stairwell", weight: 0.5 },
-        { name: "bedroom", weight: 0.1 }
+        { name: "bedroom", weight: 0.1 },
+        { name: "kitchen", weight: 0.5 },
+        { name: "chocolate fountain room", weight: 0.1 },
+        { name: "lab", weight: 0.05 }
     ],
     moneyTreasures: [
         { name: "coin", weight: 20, gold: [1, 1] },
