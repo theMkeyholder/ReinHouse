@@ -8,7 +8,9 @@ let data = {
         { name: "bedroom", weight: 0.1 },
         { name: "kitchen", weight: 0.5 },
         { name: "chocolate fountain room", weight: 0.1 },
-        { name: "lab", weight: 0.05 }
+        { name: "lab", weight: 0.05 },
+        { name: "fusion chamber", weight: 0.1 },
+        { name: "control room", weight: 0.01 }
     ],
     moneyTreasures: [
         { name: "coin", weight: 20, gold: [1, 1] },

@@ -11,9 +11,11 @@ function init() {
         let button = document.createElement('button');
         button.id = i.id;
         button.onclick = () => i.buy();
-        button.innerText = `${i.name} - ${f(i.cost)} gold`;
-        document.getElementById('items').appendChild(button);
+        button.innerText = `${i.name} - ${f(i.cost)} ${i.nightmare ? 'nightmare fuel' : 'gold'}`;
+        document.getElementById(i.nightmare ? 'nitems' : 'items').appendChild(button);
     }
+    if (game.NL) $('theme').href = 'dark.css';
+    game.tabTo(0);
 }
 
 let D = n => ExpantaNum(n);
@@ -38,7 +40,10 @@ let ITEMS = [
     new Item('lsp', 'large strength potion', 1e8, Infinity),
     new Item('slp', 'small luck potion', 1e10, 15),
     new Item('mlp', 'medium luck potion', '1e2000', 20),
-    new Item('llp', 'large luck potion', 'eee3', Infinity)
+    new Item('llp', 'large luck potion', 'eee3', Infinity),
+    new Item('dhp', 'dark health potion', 1, Infinity, true),
+    new Item('dsp', 'dark strength potion', 1, Infinity, true),
+    new Item('dlp', 'dark luck potion', 1, Infinity, true)
 ]
 
 function save() {

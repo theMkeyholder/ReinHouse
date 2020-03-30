@@ -17,6 +17,9 @@
     <script src='main.js'></script>
 
     <link rel="stylesheet" href="style.css">
+    <link id='theme' rel="stylesheet" href="light.css">
+
+    <link rel="shortcut icon" href="piratedimage.png" type="image/x-icon">
 </head>
 <body>
     <div id='main'>
@@ -24,25 +27,39 @@
         <br><br><br><br><br>
         <div id='fight'></div>
         <button id='attack' onclick='game.attack()'>Attack!!</button>
-        <div id='stairs'></div><br><br>
+        <div id='stairs'></div><div id='bed'></div>
+        <div id='bread'></div><div id='cf'></div><div id='lab'></div><div id='fc'></div><div id="cr"></div><br><br>
         <button id='climb' onclick='game.climb(true)'>Go up the stairs to the next floor</button>
         <button id='noclimb' onclick='game.climb(false)'>Stay on this floor</button>
-        <div id='bed'></div><br><br>
         <button id='sleep' onclick='game.sleep(true)'>Take a short nap...</button>
         <button id='nosleep' onclick='game.sleep(false)'>Stay awake</button>
-        <br><br>
-        <div id='bread'></div><div id='cf'></div><div id='lab'></div>
+        <button id='fuse' onclick='game.fuse(true)'>Fuse the bread and chocolate</button>
+        <button id='nofuse' onclick='game.fuse(false)'>Don't use the fuser</button>
+        <button id='gn' onclick='game.gn(true)'>Give in to the chocolate</button>
+        <button id='nogn' onclick='game.gn(false)'>Resist</button>
         <button id='nr' onclick="game.nextRoom()">Next Room</button>
     </div>
     <div id='shop'>
-        <div id='upgrades'>
-            <button id='autoProgress' onclick='UPGRADES.autoProgress.buy()'>Automatically progress through rooms - 240 gold</button>
-            <button id='autoKill' onclick='UPGRADES.autoKill.buy()'>Automatically kill enemies - 1e8 gold</button>
-            <button id='autoBuy' onclick='UPGRADES.autoBuy.buy()'>Automatically buy potions - 1e300 gold</button>
-            <button id='autoClimb' onclick='UPGRADES.autoClimb.buy()'>Automatically climb stairs - e1e100 gold</button>
-            <button id='keepUpg' onclick='UPGRADES.keepUpg.buy()'>Keep upgrades into your dreams - ee1e5000 gold</button>
+        <div class='flexbox'>
+            <button onclick='game.tabTo(0)' class='flexItem'>Normal</button>
+            <button onclick='game.tabTo(1)'class='flexItem'>Nightmare</button>
         </div>
-        <div id='items'>
+        <div id='normalshop'>
+            <div id='upgrades'>
+                <button id='autoProgress' onclick='UPGRADES.autoProgress.buy()'>Automatically progress through rooms - 240 gold</button>
+                <button id='autoKill' onclick='UPGRADES.autoKill.buy()'>Automatically kill enemies - 1e8 gold</button>
+                <button id='autoBuy' onclick='UPGRADES.autoBuy.buy()'>Automatically buy potions - 1e300 gold</button>
+                <button id='autoClimb' onclick='UPGRADES.autoClimb.buy()'>Automatically climb stairs - e1e100 gold</button>
+                <button id='keepUpg' onclick='UPGRADES.keepUpg.buy()'>Keep upgrades into your dreams - ee1e5000 gold</button>
+            </div>
+            <div id='items'>
+                
+            </div>
+        </div>
+        <div id='nightmareshop'>
+            <div id='nitems'>
+                
+            </div>
         </div>
     </div>
     <div id='save'>

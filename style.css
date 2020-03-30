@@ -34,7 +34,6 @@
 
 ::-webkit-scrollbar-thumb {
     width: 8px;
-    background-color: #A0A0A0;
 }
 
 #msglog {
@@ -46,7 +45,7 @@
     font-size: 12px;
     text-align: center;
     overflow: scroll;
-    border: 1px solid grey;
+    border: 1px solid;
 }
 
 #deets {
@@ -63,8 +62,7 @@
 }
 
 #main, #shop, #save {
-    background-color: silver;
-    border: outset lightgrey 5px;
+    border: outset 5px;
     width: calc(100vw - 166px);
 }
 
@@ -73,8 +71,17 @@
     max-height: 273px;
 }
 
-#upgrades, #items {
-    border: 2px solid grey;
+#upgrades, #items, #nitems {
+    border: 2px solid;
     display: flex;
     flex-flow: column;
+}
+
+.flexbox {
+    width: 100%;
+    display: flex;
+}
+
+.flexItem {
+    flex-basis: 1000px;
 }
