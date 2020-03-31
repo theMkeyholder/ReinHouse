@@ -71,7 +71,7 @@
     max-height: 273px;
 }
 
-#upgrades, #items, #nitems {
+#upgrades, #nupgrades, #items, #nitems, #roomeditor {
     border: 2px solid;
     display: flex;
     flex-flow: column;
@@ -84,4 +84,9 @@
 
 .flexItem {
     flex-basis: 1000px;
+}
+
+.roomweightthing {
+    background: silver;
+    border: outset grey 3px;
 }

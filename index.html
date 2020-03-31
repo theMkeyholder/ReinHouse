@@ -40,9 +40,10 @@
         <button id='nr' onclick="game.nextRoom()">Next Room</button>
     </div>
     <div id='shop'>
-        <div class='flexbox'>
-            <button onclick='game.tabTo(0)' class='flexItem'>Normal</button>
-            <button onclick='game.tabTo(1)'class='flexItem'>Nightmare</button>
+        <div id='snav' class='flexbox'>
+            <button id='s0' onclick='game.tabTo(0)' class='flexItem'>Normal</button>
+            <button id='s1' onclick='game.tabTo(1)' class='flexItem'>Nightmare</button>
+            <button id="s2" onclick='game.tabTo(2)' class="flexItem">Room Weights</button>
         </div>
         <div id='normalshop'>
             <div id='upgrades'>
@@ -57,9 +58,15 @@
             </div>
         </div>
         <div id='nightmareshop'>
+            <div id='nupgrades'>
+                <button id='autoNightmare' onclick='UPGRADES.autoNightmare.buy()'>Passively generate nightmare fuel - 100 nightmare fuel</button>
+            </div>
             <div id='nitems'>
                 
             </div>
+        </div>
+        <div id="roomeditor">
+
         </div>
     </div>
     <div id='save'>

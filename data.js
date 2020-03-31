@@ -1,16 +1,19 @@
 let data = {
     rooms: [
-        { name: "empty room", weight: 100 },
-        { name: "monster room", weight: 50 },
-        { name: "money room", weight: 10 },
-        { name: "potion lab", weight: 5 },
-        { name: "stairwell", weight: 0.5 },
-        { name: "bedroom", weight: 0.1 },
-        { name: "kitchen", weight: 0.5 },
-        { name: "chocolate fountain room", weight: 0.1 },
-        { name: "lab", weight: 0.05 },
-        { name: "fusion chamber", weight: 0.1 },
-        { name: "control room", weight: 0.01 }
+        { name: "empty room", weight: 100, vreq: () => game.NL },
+        { name: "monster room", weight: 50, vreq: () => false },
+        { name: "money room", weight: 10, vreq: () => game.nightmareLayer.gt(1) },
+        { name: "potion lab", weight: 5, vreq: () => game.nightmareLayer.gt(1) },
+        { name: "stairwell", weight: 0.5, vreq: () => game.nightmareLayer.gt(2) },
+        { name: "bedroom", weight: 0.1, vreq: () => game.nightmareLayer.gt(3) },
+        { name: "kitchen", weight: 0.5, vreq: () => game.nightmareLayer.gt(4) },
+        { name: "chocolate fountain room", weight: 0.1, vreq: () => game.nightmareLayer.gt(4) },
+        { name: "lab", weight: 0.05, vreq: () => game.nightmareLayer.gt(5) },
+        { name: "fusion chamber", weight: 0.1, vreq: () => game.nightmareLayer.gt(6) },
+        { name: "control room", weight: 0.01, vreq: () => game.nightmareLayer.gt(9) }
+    ],
+    defaultWeights: [
+        100, 50, 10, 5, 0.5, 0.1, 0.5, 0.1, 0.05, 0.1, 0.01
     ],
     moneyTreasures: [
         { name: "coin", weight: 20, gold: [1, 1] },

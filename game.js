@@ -14,6 +14,7 @@ class Game {
         this.hp = D(d.hp || 100);
         this.dmg = D(d.dmg || 5);
         this.lck = D(d.lck || 1);
+        this.nightmarePower = D(d.nightmarePower || 1);
 
         this.NL = d.NL || false;
 
@@ -36,20 +37,44 @@ class Game {
             chocbread: false
         }
 
+        this.potentPot = d.potentPot || [0, 0, 0];
+        this.shadowBlood = d.shadowBlood || 0;
+        ITEMS[13].cost = ITEMS[13].cost.tetr(this.potentPot[0]);
+        ITEMS[14].cost = ITEMS[14].cost.tetr(this.potentPot[1]);
+        ITEMS[15].cost = ITEMS[15].cost.tetr(this.potentPot[2]);
+
         this.paused = false;
 
-        this.upgradesBought = d.upgradesBought || {}
+        this.upgradesBought = d.upgradesBought || {};
+        this.roomWeights = d.roomWeights || {};
     }
 
     update() {
         if (game.tab == 0) {
             $('normalshop').style.display = 'block';
             $('nightmareshop').style.display = 'none';
+            $('roomeditor').style.display = 'none';
         } else if (game.tab == 1) {
             $('normalshop').style.display = 'none';
             $('nightmareshop').style.display = 'block';
+            $('roomeditor').style.display = 'none';
+        } else if (game.tab == 2) {
+            $('normalshop').style.display = 'none';
+            $('nightmareshop').style.display = 'none';
+            $('roomeditor').style.display = 'block';
+        }
+        if (game.NL) $('snav').style.display = 'default';
+        else $('snav').style.display = 'none';
+        for (let r in data.rooms) {
+            let i = data.rooms[r];
+            $(i.name + '_s').style.display = i.vreq() ? 'block' : 'none';
+            if ($(i.name + '_i').value.length > 0 && isNaN(parseFloat($(i.name + '_i').value))) $(i.name + '_i').value = data.defaultWeights[r];
+            i.weight = isNaN(parseFloat($(i.name + '_i').value)) ?  data.defaultWeights[r] : parseFloat($(i.name + '_i').value);
+            game.roomWeights[i.name] = isNaN(parseFloat($(i.name + '_i').value)) ?  data.defaultWeights[r] : parseFloat($(i.name + '_i').value);
         }
         if (!game.paused) {
+            if (game.hp.isNaN()) game.hp = game.dmg.clone();
+            if (game.upgradesBought['autoNightmare']) game.nightmareFuel = game.nightmareFuel.add(D(0.01).mul(game.dreamLayer.add(2).pow(game.nightmareLayer)).mul(game.nightmarePower).pow(D(1).div(game.dreamLayer.add(1))));
             $('deets').innerText = `
         You are currently in room ${f(game.room)} of floor ${f(game.floor)} ${game.dreamLayer.gt(0) ? `of dream layer ${f(game.dreamLayer)}` : ''} ${game.nightmareLayer.gt(0) ? `of nightmare layer ${f(game.nightmareLayer)}` : ''} which is a${beginsVowel(game.currentRoomType) ? 'n' : ''} ${game.currentRoomType}
         You have ${f(game.gold)} gold ${game.nightmareFuel.gt(0) ? `and ${f(game.nightmareFuel)} nightmare fuel` : ''}
@@ -60,7 +85,7 @@ class Game {
             if (game.dreamLayer.gt(2)) $('keepUpg').style.display = 'inline-block';
             else $('keepUpg').style.display = 'none';
             for (let i in UPGRADES) UPGRADES[i].update();
-            if (game.upgradesBought.autoBuy) for (let i of ITEMS) i.buy();
+            if (game.upgradesBought.autoBuy) for (let i of ITEMS) if (!i.nightmare) i.buy();
             if (game.currentEnemy instanceof Enemy) {
                 $('nr').disabled = 'disabled';
                 $('fight').innerHTML = `
@@ -158,9 +183,11 @@ class Game {
         this.justDied = true;
         this.currentEnemy = null;
         this.currentRoomType = 'empty room';
-        if (this.NL) this.logmsg(`You died and lost your gold, and your worst fear has come true... You haven't woken up. You're still in this nightmare...`, 'darkred');
-        else if (wake) this.logmsg(`*Yawn* You wake up, though it seems you got thrown out the window and have to start again. It seems you still have the stats you gained in the dream!`, 'slateblue');
-        else this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades, damage and luck${game.NL ? ', and you will gain nightmare fuel' : ''}!!`, 'darkred');
+        if (game.nightmareLayer.lt(3)) {
+            if (this.NL) this.logmsg(`You died and lost your gold, and your worst fear has come true... You haven't woken up. You're still in this nightmare...`, 'darkred');
+            else if (wake) this.logmsg(`*Yawn* You wake up, though it seems you got thrown out the window and have to start again. It seems you still have the stats you gained in the dream!`, 'slateblue');
+            else this.logmsg(`You died and lost your gold! You are back at the entrance but you'll keep your upgrades, damage and luck${game.NL ? ', and you will gain nightmare fuel' : ''}!!`, 'darkred');
+        } else this.logmsg(`You died`, 'darkred');
     }
 
     nextRoom() {
@@ -192,7 +219,7 @@ class Game {
                 }
                 break;
             case "stairwell":
-                if (this.room.lt(100)) {
+                if (this.room.lt(100) && !game.nightmareLayer.gt(1)) {
                     this.room = this.room.sub(1);
                     this.nextRoom();
                 } else {
@@ -201,7 +228,7 @@ class Game {
                 }
                 break;
             case "bedroom":
-                if (this.gold.lt('ee10000')) {
+                if (this.gold.lt('eee500') || this.floor.lt(2)) {
                     this.room = this.room.sub(1);
                     this.nextRoom();
                 } else {
@@ -279,6 +306,10 @@ class Game {
             game.hp = D(100);
             game.dmg = D(5);
             game.lck = D(1);
+            game.potentPot = [0, 0, 0];
+            game.nightmarePower = D(1);
+            game.nightmareFuel = D(0);
+            game.shadowBlood = 0;
             if (!game.upgradesBought.keepUpg) for (let i in game.upgradesBought) game.upgradesBought[i] = false;
             game.dreamLayer = game.dreamLayer.add(1);
             game.logmsg(`You fell deeper into the dreams`, 'silver');
@@ -309,6 +340,10 @@ class Game {
             game.hp = D(100);
             game.dmg = D(5);
             game.lck = D(1);
+            game.potentPot = [0, 0, 0];
+            game.nightmareFuel = D(0);
+            game.nightmarePower = D(1);
+            game.shadowBlood = 0;
             game.has = {
                 bread: false,
                 chocolate: false,
@@ -349,7 +384,9 @@ class Enemy {
     }
 
     hurt(dmg) {
+        let x = this.hp.clone();
         this.hp = this.hp.sub(dmg);
+        if (this.hp.eq(x)) game.die();
         if (this.hp.lte(0)) this.die();
     }
 
@@ -368,7 +405,7 @@ function chooseWeighted(items) { // StackOverflow code
     var acc = 0;
     chances = chances.map(el => (acc = el + acc));
     var rand = Math.random() * sum;
-    return items[chances.filter(el => el <= rand).length];
+    return items[chances.filter(el => el <= rand).length] || items[0];
 }
 
 function randBetween(min, max) {
