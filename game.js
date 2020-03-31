@@ -214,7 +214,7 @@ class Game {
                 switch (potion.type) {
                     case "heal":
                         game.hp = game.hp.add(D(potion.potency).pow(game.floor.add(1)));
-                        this.logmsg(`You found a${beginsVowel(potion.name) ? 'n' : ''} ${potion.name} that healed you for ${f(D(potion.potency).pow(game.floor.add(1)))} hp!!`, 'blue');
+                        if (!game.upgradesBought.autoBuy) this.logmsg(`You found a${beginsVowel(potion.name) ? 'n' : ''} ${potion.name} that healed you for ${f(D(potion.potency).pow(game.floor.add(1)))} hp!!`, 'blue');
                         break;
                 }
                 break;
