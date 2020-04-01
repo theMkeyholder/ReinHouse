@@ -82,7 +82,9 @@ function load() {
 }
 
 function wipe() {
-    game = new Game();
-    $('msglog').innerHTML = '======== Log ========<br><br>';
-    save();
+    if (confirm('Are you sure you want to wipe your save?')) {
+        game = new Game();
+        $('msglog').innerHTML = '======== Log ========<br><br>';
+        save();
+    }
 }
