@@ -41,7 +41,18 @@ let data = {
         { name: "stick figure", weight: 1 },
         { name: "Rick Astley", weight: 1 },
         { name: "magdonal poster", weight: 2 },
-        { name: "Satan", weight: 0.1 }
+        { name: "Satan", weight: 0.1 },
+        { name: "coinbox", weight: 3 },
+        { name: "cardboard box", weight: 1 },
+        { name: "sPoOkY cardboard box", weight: 0.1 },
+        { name: "the letter H", weight: 0.5 },
+        { name: "menacing dog", weight: 10 },
+        { name: "rock monster", weight: 5 },
+        { name: "ghost", weight: 1 },
+        { name: "SCP-106", weight: 1 },
+        { name: "lesser demon", weight: 5 },
+        { name: "greater demon", weight: 0.5 },
+        { name: "servant of nightmares", weight: 0.5 },
     ],
     monsterStats: {
         blob: { hp: 10, dmg: 1, gold: [5, 15] },
@@ -55,6 +66,17 @@ let data = {
         "stick figure": { hp: 10, dmg: 30, gold: [0, 1000] },
         "Rick Astley": { hp: 5, dmg: 0, gold: [1600, 2000] },
         "magdonal poster": { hp: 150, dmg: 10, gold: [50, 2000] },
-        "Satan": { hp: 500, dmg: 100, gold: [10000, 25000] }
+        "Satan": { hp: 500, dmg: 100, gold: [10000, 25000] },
+        "coinbox": { hp: 1, dmg: 0, gold: [1000, 5000] },
+        "cardboard box": { hp: 1, dmg: 2, gold: [2, 4] },
+        "sPoOkY cardboard box": { hp: 1, dmg: 3, gold: [2, 8] },
+        "the letter H": { hp: 10, dmg: 3, gold: [5, 20] },
+        "menacing dog": { hp: 25, dmg: 5, gold: [40, 50] },
+        "rock monster":	{ hp: 60, dmg: 7, gold: [80, 100] },
+        "ghost": { hp: 75, dmg: 7, gold: [100, 150] },
+        "SCP-106": { hp: 100, dmg: 45, gold: [500, 1500] },
+        "lesser demon": { hp: 150, dmg: 10, gold: [600, 1500] },
+        "greater demon": { hp: 250, dmg: 12, gold: [1200, 3000] },
+        "servant of nightmares": { hp: 300, dmg: 15, gold: [1500, 3200] }
     }
 }
