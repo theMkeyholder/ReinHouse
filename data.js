@@ -39,7 +39,9 @@ let data = {
         { name: "knight", weight: 1 },
         { name: "spongebob", weight: 3 },
         { name: "stick figure", weight: 1 },
-        { name: "Rick Astley", weight: 1 }
+        { name: "Rick Astley", weight: 1 },
+        { name: "magdonal poster", weight: 2 },
+        { name: "Satan", weight: 0.1 }
     ],
     monsterStats: {
         blob: { hp: 10, dmg: 1, gold: [5, 15] },
@@ -51,6 +53,8 @@ let data = {
         knight: { hp: 200, dmg: 10, gold: [1000, 2000] },
         spongebob: { hp: 100, dmg: 0, gold: [100, 500] },
         "stick figure": { hp: 10, dmg: 30, gold: [0, 1000] },
-        "Rick Astley": { hp: 5, dmg: 0, gold: [1600, 2000] }
+        "Rick Astley": { hp: 5, dmg: 0, gold: [1600, 2000] },
+        "magdonal poster": { hp: 150, dmg: 10, gold: [50, 2000] },
+        "Satan": { hp: 500, dmg: 100, gold: [10000, 25000] }
     }
 }

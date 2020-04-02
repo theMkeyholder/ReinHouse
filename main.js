@@ -71,8 +71,8 @@ function save() {
     localStorage.setItem('rhsave', e);
 }
 
-function load() {
-    let s = localStorage.getItem('rhsave');
+function load(str) {
+    let s = str || localStorage.getItem('rhsave');
     if (s != null) {
         s = JSON.parse(atob(s));
         game = new Game(s);
@@ -82,9 +82,18 @@ function load() {
 }
 
 function wipe() {
-    if (confirm('Are you sure you want to wipe your save?')) {
+    if (confirm('Are you sure you want to do that?')) {
         game = new Game();
         $('msglog').innerHTML = '======== Log ========<br><br>';
         save();
     }
+}
+
+function exp() {
+    prompt('Your save', btoa(JSON.stringify(game)));
+}
+
+function imp() {
+    let x = prompt('Import your save');
+    load(x);
 }
