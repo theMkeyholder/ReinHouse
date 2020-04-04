@@ -35,7 +35,7 @@ class Game {
             chocolate: false,
             fuser: false,
             chocbread: false
-            console: false
+            controlConsole: false
             scriptEditor: false
         }
 
