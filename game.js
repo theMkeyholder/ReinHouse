@@ -35,6 +35,8 @@ class Game {
             chocolate: false,
             fuser: false,
             chocbread: false
+            console: false
+            scriptEditor: false
         }
 
         this.potentPot = d.potentPot || [0, 0, 0];
@@ -42,7 +44,7 @@ class Game {
         ITEMS[13].cost = ITEMS[13].cost.tetr(this.potentPot[0]);
         ITEMS[14].cost = ITEMS[14].cost.tetr(this.potentPot[1]);
         ITEMS[15].cost = ITEMS[15].cost.tetr(this.potentPot[2]);
-
+        this.files = {}
         this.paused = false;
 
         this.upgradesBought = d.upgradesBought || {};
